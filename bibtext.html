@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Citation Generator</title>
+    <!-- Add CSS and JS libraries here -->
+</head>
+<body>
+    <button id="openPopup">Open Citation Popup</button>
+
+    <div id="citationPopup" class="popup">
+        <span class="close" id="closePopup">&times;</span>
+        <h2>Citation Generator</h2>
+        <textarea id="inputText" placeholder="Enter BibTeX data"></textarea>
+        <select id="citationStyle">
+            <option value="apa">APA</option>
+            <option value="mla">MLA</option>
+            <option value="chicago">Chicago</option>
+            <option value="ieee">IEEE</option>
+            <option value="harvard">Harvard</option>
+        </select>
+        <button id="generateCitation">Generate Citation</button>
+        <div id="outputCitation"></div>
+    </div>
+
+    <script>
+       // JavaScript code for opening and closing the popup and generating citations
+document.getElementById("openPopup").addEventListener("click", function () {
+    document.getElementById("citationPopup").style.display = "block";
+});
+
+document.getElementById("closePopup").addEventListener("click", function () {
+    document.getElementById("citationPopup").style.display = "none";
+});
+
+document.getElementById("generateCitation").addEventListener("click", function () {
+    const inputText = document.getElementById("inputText").value;
+    const citationStyle = document.getElementById("citationStyle").value;
+
+    // Parse the BibTeX data using citeproc-js
+    const citeproc = new CSL.Engine(new CSL.Sys()).retrieveItem(inputText);
+
+    // Generate the citation in the selected style
+    const citation = citeproc.makeCitation();
+    const formattedCitation = citation[1][0].join("");
+
+    document.getElementById("outputCitation").textContent = formattedCitation;
+});
+
+    </script>
+</body>
+</html>
